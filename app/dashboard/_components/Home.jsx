@@ -1,5 +1,5 @@
 import React from 'react';
-
+import FAQ from './FAQ';
 function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -19,6 +19,36 @@ function LandingPage() {
         </div>
       </header>
 
+{/* Sub Heading */}
+
+<h2 className="text-center text-indigo-600 text-xl md:text-3xl lg:text-4xl font-semibold mt-4">
+      Get Ready to Impress: Real Practice, Real Feedback, Real Results.
+    </h2>
+
+{/* Description Section */}
+
+<div className="flex flex-col lg:flex-row items-center lg:items-start lg:space-x-8 px-4 py-8 lg:px-16">
+      {/* Image Section */}
+      <div className="w-full lg:w-1/2 mb-8 lg:mb-0">
+        <img 
+          src="https://pro2-bar-s3-cdn-cf1.myportfolio.com/97b1d4bc028e3890ce75267deb159e95/24e71a4a26b5d319d6ac79ee_rw_600.gif?h=4c5ec98e37c4fea0b6776ef182152b43" 
+          alt="MockMeet Interview Prep" 
+          className="w-full rounded-lg shadow-lg"
+        />
+      </div>
+      
+      {/* Text Section */}
+      <div className="w-full lg:w-1/2 text-center lg:text-left">
+        <h2 className="text-2xl lg:text-3xl font-bold text-teal-600 mb-4">
+          Welcome to MockMeet
+        </h2>
+        <p className="text-gray-700 text-base lg:text-xl leading-relaxed">
+          Welcome to MockMeet, where prepping for interviews is no longer a drag. We’ve combined the brains of cutting-edge AI with insider tips from industry veterans to bring you the most real interview experience ever. Whether you're a nervous newbie or a seasoned pro, our platform fine-tunes your skills so you can walk into your next interview like you already got the job.
+        </p>
+      </div>
+    </div>
+
+    
       {/* How It Works Section */}
       <section className="container mx-auto my-16 p-8">
         <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
@@ -51,6 +81,7 @@ function LandingPage() {
           </a>
         </div>
       </section>
+      
 
       {/* Why Choose Us Section */}
       <section className="bg-gray-100 p-10">
@@ -83,7 +114,7 @@ function LandingPage() {
 
       {/* What We Do Section */}
       <section className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-600 via-blue-500 to-indigo-700 text-white">
-        <div className="max-w-3xl p-10 bg-opacity-80 bg-gray-800 rounded-3xl shadow-2xl">
+        <div className=" p-10 bg-opacity-80 bg-gray-800 rounded-3xl shadow-2xl">
           <h2 className="text-5xl font-extrabold mb-8 text-center animate-slide-in-bottom">
             What We Do
           </h2>
@@ -151,6 +182,8 @@ function LandingPage() {
           </div>
         </div>
       </section>
+ 
+<FAQ />
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white p-8">

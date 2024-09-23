@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import { db } from '../../../../../utils/db';
-import { UserAnswer } from '../../../../../utils/schema';
+import { UserAnswer  } from '../../../../../utils/schema';
 import { eq } from 'drizzle-orm';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../../../../../components/ui/collapsible';
 import { jsPDF } from 'jspdf';
@@ -20,6 +20,7 @@ function Feedback({ params }) {
         .where(eq(UserAnswer.mockIDRef, params.interviewId))
         .orderBy(UserAnswer.id);
       setFeedbackList(result);
+      console.log(mockIDRef);
     } catch (error) {
       console.error('Error fetching feedback:', error);
     }

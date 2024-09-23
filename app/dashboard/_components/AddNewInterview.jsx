@@ -37,13 +37,12 @@ function AddNewInterview() {
       - Number of Questions: ${numQuestions}
 
       Provide the output in JSON format only. Do not include any text outside the JSON.
+      JSON should be strictly in format - [{..},{..}] . which is array of objects not individual arrays containing a single object
     `;
-  
 
     try {
       const result = await chatSession.sendMessage(inputPrompt);
       const mockJsonResp = (result.response.text()).replace('```json', '').replace('```', '');
-      console.log(mockJsonResp);
       setJsonResponse(mockJsonResp);
 
       if (mockJsonResp) {
@@ -61,57 +60,96 @@ function AddNewInterview() {
           setOpenDialog(false);
           router.push('/dashboard/interview/' + resp[0]?.mockId);
         }
-      } else {
-        
       }
     } catch (error) {
-      
+      console.error(error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <div className='p-10 border rounded-lg bg-secondary hover:scale-105 hover:shadow-md transition-all cursor-pointer' onClick={() => setOpenDialog(true)}>
-        <h2 className='text-lg font-semibold'>+ Add New</h2>
+    <div className="w-full flex justify-center">
+      {/* Add New Button */}
+      <div className="p-8 border rounded-lg bg-blue-500 text-white hover:scale-105 hover:shadow-lg transition-transform duration-300 cursor-pointer w-64 text-center" onClick={() => setOpenDialog(true)}>
+        <h2 className="text-lg font-semibold">+ Add New Interview</h2>
       </div>
 
+      {/* Dialog Box */}
       <Dialog open={openDialog}>
-        <DialogContent>
+        <DialogContent className="bg-white rounded-lg shadow-xl p-8 max-w-2xl mx-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Tell us more about your job interview</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-gray-800 mb-4">Add New Interview Details</DialogTitle>
             <DialogDescription>
-              <form onSubmit={onSubmit} className='space-y-6'>
-                <div>
-                  <h3 className='text-lg font-medium'>Add Details about the Job Position / Role</h3>
-                  <div className='mt-4'>
-                    <label className='block text-sm font-medium'>Job Role / Job Position</label>
-                    <Input placeholder='e.g., Web Developer' required onChange={(e) => setJobPosition(e.target.value)} />
-                  </div>
-
-                  <div className='mt-4'>
-                    <label className='block text-sm font-medium'>Job Description</label>
-                    <Textarea placeholder='e.g., Tech Stack - React, Angular, NodeJS' required onChange={(e) => setJobDes(e.target.value)} />
-                  </div>
-
-                  <div className='mt-4'>
-                    <label className='block text-sm font-medium'>Years of Experience</label>
-                    <Input placeholder='e.g., 2' type='number' required max='40' onChange={(e) => setJobExperience(e.target.value)} />
-                  </div>
-
-                  <div className='mt-4'>
-                    <label className='block text-sm font-medium'>Number of Questions</label>
-                    <Input placeholder='e.g., 5' type='number' min='1' required value={numQuestions} onChange={(e) => setNumQuestions(e.target.value)} />
-                  </div>
+              <form onSubmit={onSubmit} className="space-y-6">
+                {/* Job Role */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Job Role / Job Position</label>
+                  <Input
+                    className="w-full border-gray-300 rounded-lg p-2"
+                    placeholder="e.g., Web Developer"
+                    required
+                    onChange={(e) => setJobPosition(e.target.value)}
+                  />
                 </div>
 
-                <div className='flex gap-4 justify-end'>
-                  <Button type='button' variant='ghost' onClick={() => setOpenDialog(false)}>Cancel</Button>
-                  <Button type='submit' disabled={loading}>
+                {/* Job Description */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Job Description</label>
+                  <Textarea
+                    className="w-full border-gray-300 rounded-lg p-2"
+                    placeholder="e.g., Tech Stack - React, Angular, NodeJS"
+                    required
+                    onChange={(e) => setJobDes(e.target.value)}
+                  />
+                </div>
+
+                {/* Years of Experience */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Years of Experience</label>
+                  <Input
+                    className="w-full border-gray-300 rounded-lg p-2"
+                    type="number"
+                    placeholder="e.g., 2"
+                    required
+                    max="40"
+                    onChange={(e) => setJobExperience(e.target.value)}
+                  />
+                </div>
+
+                {/* Number of Questions */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Number of Questions</label>
+                  <Input
+                    className="w-full border-gray-300 rounded-lg p-2"
+                    type="number"
+                    placeholder="e.g., 5"
+                    min="1"
+                    required
+                    value={numQuestions}
+                    onChange={(e) => setNumQuestions(e.target.value)}
+                  />
+                </div>
+
+                {/* Submit / Cancel Buttons */}
+                <div className="flex justify-end space-x-4">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                    onClick={() => setOpenDialog(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition-all flex items-center"
+                    disabled={loading}
+                  >
                     {loading ? (
                       <>
-                        <LoaderCircleIcon className='animate-spin' /> Generating...
+                        <LoaderCircleIcon className="animate-spin h-5 w-5 mr-2" />
+                        Generating...
                       </>
                     ) : (
                       'Start Interview'

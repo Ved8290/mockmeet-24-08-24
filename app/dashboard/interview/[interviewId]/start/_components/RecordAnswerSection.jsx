@@ -50,24 +50,40 @@ function RecordAnswerSection({ mockInterviewQuestion, activeQuestionIndex, inter
     setLoading(true);
 
     const questionNumber = activeQuestionIndex + 1;
-    const feedbackPrompt = `Question ${questionNumber}: ${mockInterviewQuestion[activeQuestionIndex]?.question}, User Answer: ${userAnswer}, Depend on question and user answer for the given interview question, please give us a rating for the answer and feedback as an area of improvement if any, in just 3 to 5 lines to improve it in JSON format. With rating field and feedback field: (Please give all text inside JSON form only. Wrap all things in {[]} only)`;
+    const feedbackPrompt = `Question ${questionNumber}: ${mockInterviewQuestion[activeQuestionIndex]?.question}, User Answer: ${userAnswer}, Depend on question and user answer for the given interview question, please give us a "rating" for the answer and "feedback" as an area of improvement if any, in just 3 to 5 lines to improve it in JSON format. With rating field and feedback field `;
 
     try {
       const result = await chatSession.sendMessage(feedbackPrompt);
 
       // Strip out any unnecessary code blocks or formatting
       const rawJson = result.response.text().replace(/```json|```/g, '').trim();
-      
       // Parse the JSON response
       const jsonFeedbackResp = JSON.parse(rawJson);
+     
+      // Check if feedback and rating exist, use defaults if missing
+      const feedback = jsonFeedbackResp.feedback || 'No feedback provided';
+      const rating = jsonFeedbackResp.rating || 0;
 
+      // Log the values being inserted into the database
+      console.log('Inserting into DB:', {
+        mockIDRef: interviewData?.mockID,
+        question: mockInterviewQuestion[activeQuestionIndex]?.question,
+        correctAns: mockInterviewQuestion[activeQuestionIndex]?.answer,
+        userAns: userAnswer,
+        feedback: feedback,
+        rating: rating,
+        userEmail: user?.primaryEmailAddress?.emailAddress,
+        createdAt: moment().format('DD-MM-YYYY')
+      });
+
+      // Insert the data into the database
       await db.insert(UserAnswer).values({
         mockIDRef: interviewData?.mockID,
         question: mockInterviewQuestion[activeQuestionIndex]?.question,
         correctAns: mockInterviewQuestion[activeQuestionIndex]?.answer,
         userAns: userAnswer,
-        feedback: jsonFeedbackResp?.feedback || 'No feedback provided',
-        rating: jsonFeedbackResp?.rating || 0,
+        feedback: feedback,
+        rating: rating,
         userEmail: user?.primaryEmailAddress?.emailAddress,
         createdAt: moment().format('DD-MM-YYYY')
       });
